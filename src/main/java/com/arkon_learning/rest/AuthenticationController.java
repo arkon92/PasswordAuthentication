@@ -12,16 +12,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 
 /**
@@ -31,11 +28,9 @@ import java.security.SecureRandom;
 
 @Controller
 @EnableAutoConfiguration
-@EnableJpaRepositories
-@ComponentScans(value = {"com.arkon_learning.configuration.entity"})
+@EnableJpaRepositories(value = "com.arkon_learning.database")
+@ComponentScan(value = {"com.arkon_learning.configuration", "com.arkon_learning.database"})
 @EntityScan(value = "com.arkon_learning")
-@ComponentScan(value = "com.arkon_learning.configuration")
-@ComponentScan(value = "com.arkon_learning.database")
 public class AuthenticationController {
 
     Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
@@ -44,12 +39,13 @@ public class AuthenticationController {
     private ApplicationConfiguration applicationConfiguration;
 
     @Autowired
-    private UserJpaRepository modelJpaRepository;
+    private UserJpaRepository userJpaRepository;
 
-    /*@GetMapping("/")
-    public ResponseEntity<Iterable<UserInfo>> findByRepo() throws IOException {
-        return new ResponseEntity<Iterable<UserInfo>>(modelJpaRepository.findAll(), HttpStatus.OK);
-    }*/
+    @GetMapping("/users")
+    @ResponseBody
+    public ResponseEntity<Iterable<UserEntity>> findByRepo() throws IOException {
+        return new ResponseEntity<Iterable<UserEntity>>(userJpaRepository.findAll(), HttpStatus.OK);
+    }
 
     @RequestMapping("/")
     @ResponseBody
@@ -60,16 +56,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registerUser")
+    @CrossOrigin
     @ResponseBody
     public ResponseEntity<UserEntity> registerUser(@RequestBody UserInfo userInfo) {
         logger.debug("Received {}", userInfo);
         UserEntity model = new UserEntity(new SecureRandom().nextLong(), userInfo.getEmail(),
                 userInfo.getUsername(), userInfo.getPassword());
-        UserEntity result = modelJpaRepository.save(model);
+        UserEntity result = userJpaRepository.save(model);
 
         return new ResponseEntity<UserEntity>(result, HttpStatus.OK);
     }
-
 
    /* @GetMapping("/repo/{value}")
     public ResponseEntity saveByRepo(@PathVariable String value) {
