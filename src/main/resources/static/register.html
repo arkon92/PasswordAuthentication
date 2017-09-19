@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.js"></script>
+    <script src="javascript/rest-calls.js"></script>
+    <script src="javascript/sha256.js"></script>
+
+</head>
+<body>
+
+<h1>Register</h1>
+
+<div ng-app="registerApp" ng-controller="registerCtrl">
+
+    <div>
+        <form>
+
+            <div>
+                Email: <input type="email" ng-model="user_email" required/>
+            </div>
+
+            <div>
+                Username: <input type="text" ngTrim="true" ng-model="user_username" required/>
+            </div>
+
+            <div>
+                Password: <input type="password" ng-model="user_password" required>
+            </div>
+
+            <div>
+                Confirm Password: <input type="password" ng-model="user_password_confirmation" required>
+            </div>
+
+            <div>
+                <button ng-click="postUserRegistrationData()">Register</button>
+            </div>
+
+            <div>
+                <p>{{message_alert}}</p>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>
