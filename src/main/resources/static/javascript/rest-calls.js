@@ -1,7 +1,7 @@
 var app = angular.module('registerApp', []);
 app.controller('registerCtrl', function ($scope, $http) {
 
-    document.getElementById("registration-success-div").style.visibility="hidden";
+    document.getElementById("registration-success-div").style.display="none";
 
         $scope.postUserRegistrationData = function () {
 
@@ -26,8 +26,8 @@ app.controller('registerCtrl', function ($scope, $http) {
                 function successCallback(response) {
                     console.log(response);
                     $scope.message_alert = "Welcome to the game " + response.data.username
-                    document.getElementById("registration-form-div").style.visibility="hidden";
-                    document.getElementById("registration-success-div").style.visibility="visible";
+                    document.getElementById("registration-form-div").style.display="none";
+                    document.getElementById("registration-success-div").style.display="block";
                 }, function errorCallback(response) {
                     console.error("Unable to perform a POST request on \"/registerUser\"");
                     console.error(response);
