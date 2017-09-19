@@ -15,7 +15,7 @@ public class ResourceFileReader {
 
     private Logger logger = LoggerFactory.getLogger(ResourceFileReader.class);
 
-    private final String errorFilePath = "/error/400.html";
+    private final String errorFilePath = "/static/error/400.html";
     private final String fileToReadPath;
 
     public ResourceFileReader(String fileToReadPath) {
