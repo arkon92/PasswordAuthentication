@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationConfiguration {
 
-    @Value("${application.html.index.file:/index.html}")
+    @Value("${application.html.index.file:/static/index.html}")
     private String indexFile;
 
-    @Value("${application.html.register.file:/register.html}")
+    @Value("${application.html.register.file:/static/register.html}")
     private String registerFile;
 
-    @Value("${application.html.signIn.file:/signIn.html}")
+    @Value("${application.html.signIn.file:/static/signIn.html}")
     private String signInFile;
 
 
