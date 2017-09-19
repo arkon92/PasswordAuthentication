@@ -15,9 +15,8 @@
 
 <div ng-app="registerApp" ng-controller="registerCtrl">
 
-    <div>
+    <div id="registration-form-div">
         <form>
-
             <div>
                 Email: <input type="email" ng-model="user_email" required/>
             </div>
@@ -37,13 +36,12 @@
             <div>
                 <button ng-click="postUserRegistrationData()">Register</button>
             </div>
-
-            <div>
-                <p>{{message_alert}}</p>
-            </div>
-
         </form>
+    </div>
 
+    <div id="registration-success-div">
+        <p>{{message_alert}}</p>
+        <p>You can now <a href="signIn.html">sign in</a></p>
     </div>
 
 </div>

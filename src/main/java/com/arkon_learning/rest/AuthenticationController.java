@@ -29,8 +29,8 @@ import java.security.SecureRandom;
 @Controller
 @EnableAutoConfiguration
 @EnableJpaRepositories(value = "com.arkon_learning.database")
-@ComponentScan(value = {"com.arkon_learning.configuration", "com.arkon_learning.database"})
-@EntityScan(value = "com.arkon_learning")
+@ComponentScan(value = {"com.arkon_learning.configuration"})
+@EntityScan(value = "com.arkon_learning.database.entity")
 public class AuthenticationController {
 
     Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
