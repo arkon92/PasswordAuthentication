@@ -25,12 +25,9 @@ app.controller('registerCtrl', function ($scope, $http) {
             $http.post("http://localhost:8080/registerUser", registration_data).then(
                 function successCallback(response) {
                     console.log(response);
-                    if (typeof(Storage) !== "undefined") {
-                        sessionStorage.setItem("token", response.data.token);
-                    }
-                    $scope.message_alert = "Welcome to the game " + sessionStorage.getItem("token");
                     document.getElementById("registration-form-div").style.display = "none";
                     document.getElementById("registration-success-div").style.display = "block";
+                    $scope.message_alert = "Welcome to the game " + response.data.token;
                 }, function errorCallback(response) {
                     console.error("Unable to perform a POST request on \"/registerUser\"");
                     console.error(response);

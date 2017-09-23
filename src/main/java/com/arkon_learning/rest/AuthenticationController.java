@@ -53,14 +53,14 @@ public class AuthenticationController {
 
     @GetMapping("/users")
     @ResponseBody
-    public ResponseEntity<Iterable<UserEntity>> findByRepo(@RequestHeader(value = "Token") String userAgent) throws IOException {
+    public ResponseEntity<Iterable<UserEntity>> findByRepo(@RequestHeader(value = "Token") String token) throws IOException {
         return new ResponseEntity<>(userJpaRepository.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping("/")
     @ResponseBody
     public String indexPage() {
-        logger.debug("Access to index.html");
+        logger.info("Access to index.html");
         ResourceFileReader indexReader = new ResourceFileReader(applicationConfiguration.getIndexFile());
         return indexReader.getFileContentAsString();
     }
@@ -69,7 +69,7 @@ public class AuthenticationController {
     @CrossOrigin
     @ResponseBody
     public ResponseEntity<RegistrationResponse> registerUser(@RequestBody UserRegistrationInfo userRegistrationInfo) {
-        logger.debug("Received {}", userRegistrationInfo);
+        logger.info("Received {}", userRegistrationInfo);
 
         String hashedPassword = passwordEncoder.encode(userRegistrationInfo.getPassword());
         UserEntity model = new UserEntity(new SecureRandom().nextLong(), userRegistrationInfo.getEmail(),
@@ -85,17 +85,34 @@ public class AuthenticationController {
     @CrossOrigin
     @ResponseBody
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody UserAuthenticationInfo userAuthenticationInfo) {
-        logger.debug("Received {}", userAuthenticationInfo);
+        logger.info("Received {}", userAuthenticationInfo);
 
         List<UserEntity> userEntity = null;
         userEntity = userJpaRepository.findByUsername(userAuthenticationInfo.getUsername());
         if (userEntity.size() > 0) {
             for (UserEntity entity : userEntity) {
                 if (passwordEncoder.matches(userAuthenticationInfo.getPassword(), entity.getPassword())) {
-                    return new ResponseEntity<>(HttpStatus.OK);
+                    AuthenticationResponse authenticationResponse = new AuthenticationResponse(userAuthenticationInfo.getUsername());
+                    return new ResponseEntity<>(authenticationResponse,HttpStatus.OK);
                 }
             }
         }
+
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping("/authenticateUserWithToken")
+    @CrossOrigin
+    @ResponseBody
+    public ResponseEntity<AuthenticationResponse> authenticateUserWithToken(@RequestHeader(value = "Token") String userToken) {
+        logger.info("Received {}", userToken);
+
+        // in the next development iteration, we will check the token validity
+        List<UserEntity> userEntity = userJpaRepository.findByUsername(userToken);
+        if (userEntity.size() > 0) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
