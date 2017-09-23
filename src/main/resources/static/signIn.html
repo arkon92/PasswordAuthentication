@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign in</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.js"></script>
+    <script src="javascript/authentication-rest-calls.js"></script>
+    <script src="javascript/sha256.js"></script>
 </head>
 <body>
+
+<div ng-app="authenticateApp" ng-controller="authenticateCtrl">
+
+    <h1>Sign-In</h1>
+
+    <div id="authentication-form-div">
+        <form>
+            <div>
+                Username: <input type="text" ngTrim="true" ng-model="user_username" required/>
+            </div>
+
+            <div>
+                Password: <input type="password" ng-model="user_password" required>
+            </div>
+
+            <div>
+                <button ng-click="postUserCredentials()">Sign-In</button>
+            </div>
+        </form>
+
+        <div id="authentication-success-div">
+            <p>{{success_message_alert}}</p>
+        </div>
+        <div id="authentication-failed-div">
+            <p>{{error_message_alert}}</p>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

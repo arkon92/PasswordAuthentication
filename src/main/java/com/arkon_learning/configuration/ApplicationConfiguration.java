@@ -19,6 +19,9 @@ public class ApplicationConfiguration {
     @Value("${application.html.signIn.file:/static/signIn.html}")
     private String signInFile;
 
+    @Value("${application.password.storage.secret:password}")
+    private String passwordStorageSecret;
+
 
     public String getIndexFile() {
         return indexFile;
@@ -30,6 +33,10 @@ public class ApplicationConfiguration {
 
     public String getSignInFile() {
         return signInFile;
+    }
+
+    public String getPasswordStorageSecret() {
+        return passwordStorageSecret;
     }
 
 }
